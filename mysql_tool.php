@@ -10,5 +10,13 @@
        $result = mysql_query($sql);
        mysql_close($connect);
        return $result;
+        }
+   function db_insert($sql){
+       $connect = build_connection();
+       mysql_query($sql);
+       $id = mysql_insert_id();
+       mysql_close($connect);
+       return $id;
    }
+
 ?>
