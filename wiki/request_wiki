@@ -1,0 +1,195 @@
+接口调用说明：
+所有接口前缀：42.96.164.129/x_killer/gamee.php?method=get_chapters_by_strategy_id&callback=aa
+method表示要调用的方法
+callback为json域
+传递的参数使用utf8
+所有返回值的格式模板如下：
+aa({
+    "retcode": 200,  //200：正常返回，201：未登陆，202：无权限。
+    "content": [ //content下则为不同method的返回值。
+        {
+            "id": "1",
+            "name": "勇气默示录",
+            "pic_url": "http://42.96.164.129/game_strategy/pic/1.jpg"
+        }
+    ]
+})
+
+1.根据游戏名称搜索游戏：search_game_by_name
+ http://42.96.164.129/x_killer/gamee.php?method=search_game_by_name&callback=aa&name=录&start=0&length=1
+ * 参数:name(游戏名称，可模糊）, start（从搜索结果中的第几个开始取，从0开始）, length(取几个）
+ * 返回值：jsonarray： 每一个item中，system_id为game的ID，pic_url为游戏图片url；
+ * 返回值示例：
+aa({
+    "retcode": 200,
+    "content": [
+        {
+            "id": "1",
+            "name": "勇气默示录",
+            "pic_url": "http://42.96.164.129/game_strategy/pic/1.jpg"
+        }
+    ]
+})
+
+2.根据游戏ID获取游戏信息:get_game_info_by_id
+ http://42.96.164.129/x_killer/gamee.php?method=get_game_info_by_id&callback=aa&id=1
+ * 参数:id(游戏ID）
+ * 返回值：json，详细解释见示例中的注释
+ * 返回值示例： 
+aa({
+    "retcode": 200,
+    "content": {
+        "id": "1",
+        "game_name": "勇气默示录",
+        "english_name": "Bravely Default - For the Sequel",
+        "game_type": "角色扮演RPG",
+        "release_area": "日版",
+        "publisher": "Square Enix",
+        "summary_url": "http://42.96.164.129/game_strategy/summary/1",
+        "pic_url": "http://42.96.164.129/game_strategy/pic/1.jpg",
+        "player_num": "1",
+        "platform": " 3DS ",
+        "is_internet": "0",
+        "language": "中文 英文 日文",
+        "release_date": "2012-10-11"
+    }
+})
+
+3.根据游戏ID获取攻略信息:get_strategy_by_game_id
+http://42.96.164.129/x_killer/gamee.php?method=get_strategy_by_game_id&callback=aa&id=1&start=0&length=1
+* 参数：id为游戏ID，start，length同上
+* 返回值：jsonarray:其中id为攻略的ID
+* 返回值示例：
+aa({
+    "retcode": 200,
+    "content": [
+        [
+            {
+                "name": "勇气默示录 主线攻略",
+                "id": "1"
+            }
+        ]
+    ]
+})
+
+4.根据游戏攻略ID获取游戏攻略的章节信息:get_chapters_by_strategy_id
+http://42.96.164.129/x_killer/gamee.php?method=get_chapters_by_strategy_id&callback=aa&id=1&start=0&length=9
+* 参数：id为游戏攻略ID，start，length同上
+* 返回值：jsonarray,服务端保证章节顺序，具体解释见示例；
+* 返回值示例：
+aa({
+    "retcode": 200,
+    "content": [
+        {
+            "name": "序章 身处绝望的深渊",
+            "id": "1",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c0.html"
+        },
+        {
+            "name": "第一章 只是等待的话连狗都做得到",
+            "id": "2",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c1.html"
+        },
+        {
+            "name": "第二章 那一日 眺望青空",
+            "id": "3",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c2.html"
+        },
+        {
+            "name": "第三章 动人的羁绊呐",
+            "id": "4",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c3.html"
+        },
+        {
+            "name": "第四章 白与黑",
+            "id": "5",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c4.html"
+        },
+        {
+            "name": "第五章 昨日所见的风景",
+            "id": "6",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c5.html"
+        },
+        {
+            "name": "第六章 反复重演的世界～EQUAL～",
+            "id": "7",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c6.html"
+        },
+        {
+            "name": "第七章 ～DASH～反复重演的世界",
+            "id": "8",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c7.html"
+        },
+        {
+            "name": "终章 说谎的妖精",
+            "id": "9",
+            "url": "http://42.96.164.129/game_strategy/1/main_process/c8.html"
+        }
+    ]
+})
+5. 注册用户:user_register
+http://42.96.164.129/x_killer/gamee.php?method=user_register&user_name=wangying&callback=aa&password=wangying&email=wangying@126.com
+* 参数：user_name, password（传输时请使用32位小写MD5）, email
+* 返回值：register_state：1(密码不合法），2（email不合法），3（email已使用），4（用户名已使用），0（注册成功并登陆）
+* 返回值示例：
+aa({
+    "retcode": 200,
+    "content": {
+        "register_state": 0
+    }
+})
+6. 用户登陆:user_login
+http://42.96.164.129/x_killer/gamee.php?method=user_login&password=wangying&email=wangying@126.com&callback=1a
+* 参数：password（传输时请使用32位小写MD5）,email
+* 返回值：login_state：0（登陆成功），1（用户名或密码错误），登陆成功会返回用户名：user_name
+* 返回值示例：
+1a({
+    "retcode": 200,
+    "content": {
+        "login_state": 0,
+        "user_name": "wangying"
+    }
+})
+
+7. 用户注销：user_logout
+http://42.96.164.129/x_killer/gamee.php?method=user_logout&callback=0
+* 参数：无
+* 返回值：logout_state：0（注销成功），1（系统错误）
+* 返回值示例：
+0({
+    "retcode": 200,
+    "content": {
+        "logout_state": 0
+    }
+})
+8.存储阅读进度： save_read
+http://42.96.164.129/x_killer/gamee.php?method=save_read&callback=0&url=test&strategy_id=1&height=1&title=ttt
+* 参数：url（阅读页的url）, strategy_id(攻略的id）, height(阅读屏幕高度）,title（该存储条目的名称）
+* 返回值：save_state：0(存储成功），1（系统错误）
+* 返回值示例：
+0({
+    "retcode": 200,
+    "content": {
+        "save_state": 0
+    }
+})
+9.读取阅读进度： load_read
+http://42.96.164.129/x_killer/gamee.php?method=load_read&callback=0
+* 参数：无
+* 返回值：height，title，url
+* 返回值示例：
+0({
+    "retcode": 200,
+    "content": [
+        {
+            "height": "1",
+            "title": "ttt",
+            "url": "test"
+        },
+        {
+            "height": "3",
+            "title": "中文",
+            "url": "http://www.jb51.net/article/28218.htm"
+        }
+    ]
+})
